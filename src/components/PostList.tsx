@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
 	root: {
-		margin: '3em 0.5em',
+		margin: '2em 0.5em',
 		display: 'flex',
 		flexWrap: 'wrap',
 		justifyContent: 'space-around',

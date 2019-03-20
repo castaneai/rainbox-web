@@ -1,12 +1,11 @@
 import React from 'react'
 import firebase from 'firebase/app'
 import { useAuthState } from 'react-firebase-hooks/auth'
-import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import AccountCircle from '@material-ui/icons/AccountCircle'
+import Gradient from '@material-ui/icons/Gradient'
 import Avatar from '@material-ui/core/Avatar'
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
@@ -15,9 +14,21 @@ import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
 	root: {
+		width: '100%',
+	},
+	logo: {
+		marginRight: '0.6em',
+	},
+	title: {
+		textDecoration: 'none',
 	},
 	grow: {
 		flexGrow: 1,
+	},
+	avatar: {
+		width: '1.5em',
+		height: '1.5em',
+		marginRight: '0.4em',
 	},
 }))
 
@@ -49,15 +60,18 @@ const RainBar = () => {
 	const userAvatar = (user: firebase.User) => {
 		const alt = user.displayName || '';
 		if (!user.photoURL) {
-			return <Avatar alt={alt}><AccountCircle /></Avatar>
+			return <Avatar className={classes.avatar} alt={alt}><AccountCircle /></Avatar>
 		}
-		return <Avatar alt={alt} src={user.photoURL} />
+		return <Avatar className={classes.avatar} alt={alt} src={user.photoURL} />
 	}
 
 	const account = (user: firebase.User) => {
 		if (user) {
 			return <div>
-				<IconButton onClick={handleMenu} color="inherit">{userAvatar(user)}</IconButton>
+				<Button onClick={handleMenu} color="inherit">
+					{userAvatar(user)}
+					{user.displayName || 'testUser'}
+				</Button>
 				{accountMenu()}
 			</div>
 		}
@@ -69,16 +83,12 @@ const RainBar = () => {
 	}
 
 	return <div className={classes.root}>
-		<AppBar position="static" color="default">
-			<Toolbar>
-				<Link to="/">
-				<Typography variant="h6" color="inherit" noWrap className={classes.grow}>
-					RAINBOX
-				</Typography>
-				</Link>
-				{!initialising && (user ? account(user) : loginButton())}
-			</Toolbar>
-		</AppBar>
+		<Toolbar>
+			<Link to="/" className={`${classes.grow} ${classes.title}`}>
+			<Button><Gradient className={classes.logo} />RAINBOX</Button>
+			</Link>
+			{!initialising && (user ? account(user) : loginButton())}
+		</Toolbar>
 	</div>
 }
 
