@@ -5,12 +5,8 @@ import { CircularProgress } from '@material-ui/core'
 import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
 import { makeStyles } from '@material-ui/styles';
-
-interface Post {
-	id: string
-	thumbnailUrl: string
-	authorUserId: string
-}
+import { Post } from './Post';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -42,7 +38,7 @@ const PostList = () => {
 	const tile = (doc: firebase.firestore.QueryDocumentSnapshot) => {
 		const post = {id: doc.id, ...doc.data()} as Post
 		return <GridListTile key={post.id} cols={1}>
-			<img src={post.thumbnailUrl} />
+			<Link to={`/post/${post.id}`}><img src={post.thumbnailUrl} /></Link>
 		</GridListTile>
 	}
 

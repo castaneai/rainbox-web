@@ -10,7 +10,8 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import Avatar from '@material-ui/core/Avatar'
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
-import { makeStyles } from '@material-ui/styles';
+import { makeStyles } from '@material-ui/styles'
+import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -70,9 +71,11 @@ const RainBar = () => {
 	return <div className={classes.root}>
 		<AppBar position="static" color="default">
 			<Toolbar>
+				<Link to="/">
 				<Typography variant="h6" color="inherit" noWrap className={classes.grow}>
 					RAINBOX
 				</Typography>
+				</Link>
 				{!initialising && (user ? account(user) : loginButton())}
 			</Toolbar>
 		</AppBar>
