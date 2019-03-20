@@ -5,7 +5,7 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import 'firebase/database';
+import 'firebase/firestore';
 (async () => {
 	const conf = await (await fetch('/firebase-config.json')).json();
 	firebase.initializeApp(conf);
