@@ -3,7 +3,6 @@ import firebase from 'firebase/app'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import Toolbar from '@material-ui/core/Toolbar'
 import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import Gradient from '@material-ui/icons/Gradient'
 import Avatar from '@material-ui/core/Avatar'
@@ -43,8 +42,9 @@ const RainBar = () => {
 	const handleClose = () => {
 		setAnchorEl(null)
 	}
-	const login = () => {
-	  firebase.auth().signInWithEmailAndPassword('test@example.com', 'password')
+	const login = async () => {
+		const provider = new firebase.auth.TwitterAuthProvider();
+		await firebase.auth().signInWithRedirect(provider);
 	}
 	const logout = () => {
 	  firebase.auth().signOut()
