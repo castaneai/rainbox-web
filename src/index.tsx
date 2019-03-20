@@ -3,8 +3,14 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-
-ReactDOM.render(<App />, document.getElementById('root'));
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/database';
+(async () => {
+	const conf = await (await fetch('/firebase-config.json')).json();
+	firebase.initializeApp(conf);
+	ReactDOM.render(<App />, document.getElementById('root'));
+})();
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
