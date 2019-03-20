@@ -12,13 +12,17 @@ interface Post {
 	authorUserId: string
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
 	root: {
-		'display': 'flex',
-		'flexWrap': 'wrap',
-		'justifyContent': 'space-around',
+		margin: '3em 0.5em',
+		display: 'flex',
+		flexWrap: 'wrap',
+		justifyContent: 'space-around',
+	},
+	gridList: {
+		width: 900,
 	}
-})
+}))
 
 const PostList = () => {
 	const classes = useStyles();
@@ -27,7 +31,9 @@ const PostList = () => {
 		return <p>Error: {error}</p>
 	}
 	if (loading) {
-		return <CircularProgress />
+		return <div className={classes.root}>
+			<CircularProgress />
+		</div>
 	}
 	if (!value) {
 		return <p>nothing</p>
@@ -35,13 +41,13 @@ const PostList = () => {
 
 	const tile = (doc: firebase.firestore.QueryDocumentSnapshot) => {
 		const post = {id: doc.id, ...doc.data()} as Post
-		return <GridListTile key={post.id} cols={3}>
+		return <GridListTile key={post.id} cols={1}>
 			<img src={post.thumbnailUrl} />
 		</GridListTile>
 	}
 
 	return <div className={classes.root}>
-		<GridList cellHeight={150} cols={3}>
+		<GridList className={classes.gridList} cellHeight={150} cols={8}>
 			{value.docs.map(tile)}
 		</GridList>
 	</div>

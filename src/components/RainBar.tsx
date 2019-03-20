@@ -10,8 +10,18 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import Avatar from '@material-ui/core/Avatar'
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
+import { makeStyles } from '@material-ui/styles';
+
+const useStyles = makeStyles(theme => ({
+	root: {
+	},
+	grow: {
+		flexGrow: 1,
+	},
+}))
 
 const RainBar = () => {
+	const classes = useStyles();
 	const {initialising, user} = useAuthState(firebase.auth())
 	const [anchorEl, setAnchorEl] = React.useState(null)
 
@@ -57,14 +67,16 @@ const RainBar = () => {
 		return <Button onClick={login}>Login</Button>
 	}
 
-	return <AppBar position="static" color="default">
-		<Toolbar>
-			<Typography variant="h6" color="inherit" noWrap>
-				RAINBOX
-			</Typography>
-			{!initialising && (user ? account(user) : loginButton())}
-		</Toolbar>
-  </AppBar>
+	return <div className={classes.root}>
+		<AppBar position="static" color="default">
+			<Toolbar>
+				<Typography variant="h6" color="inherit" noWrap className={classes.grow}>
+					RAINBOX
+				</Typography>
+				{!initialising && (user ? account(user) : loginButton())}
+			</Toolbar>
+		</AppBar>
+	</div>
 }
 
 export default RainBar
