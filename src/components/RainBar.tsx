@@ -10,6 +10,8 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { makeStyles } from "@material-ui/styles";
 import { Link } from "react-router-dom";
+import { useDocument } from "react-firebase-hooks/firestore";
+import { User } from "../User";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,6 +37,18 @@ const RainBar = () => {
   const classes = useStyles();
   const { initialising, user } = useAuthState(firebase.auth());
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const { error, loading, value } = useDocument(
+    firebase.firestore().doc(`users/${user ? user.uid : "_"}`)
+  );
+  const myUser =
+    user && value ? ({ id: user.uid, ...value.data() } as User) : null;
+  if (user && value && !value.exists) {
+    const userRef = firebase.firestore().doc(`users/${user.uid}`);
+    userRef.set({
+      displayName: user.displayName || "unknown",
+      avatarImageUrl: user.photoURL
+    } as User);
+  }
 
   const handleMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -59,25 +73,17 @@ const RainBar = () => {
     );
   };
 
-  const userAvatar = (user: firebase.User) => {
-    const alt = user.displayName || "";
-    if (!user.photoURL) {
-      return (
-        <Avatar className={classes.avatar} alt={alt}>
-          <AccountCircle />
-        </Avatar>
-      );
-    }
-    return <Avatar className={classes.avatar} alt={alt} src={user.photoURL} />;
-  };
-
-  const account = (user: firebase.User) => {
+  const account = (user: User) => {
     if (user) {
       return (
         <div>
           <Button onClick={handleMenu} color="inherit">
-            {userAvatar(user)}
-            {user.displayName || "testUser"}
+            <Avatar
+              className={classes.avatar}
+              alt={user.displayName}
+              src={user.avatarImageUrl}
+            />
+            {user.displayName}
           </Button>
           {accountMenu()}
         </div>
@@ -103,7 +109,9 @@ const RainBar = () => {
             RAINBOX
           </Button>
         </Link>
-        {!initialising && (user ? account(user) : loginButton())}
+        {!initialising &&
+          !loading &&
+          (myUser ? account(myUser) : loginButton())}
       </Toolbar>
     </div>
   );

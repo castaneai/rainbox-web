@@ -1,5 +1,5 @@
 import React from "react";
-import { Post } from "./Post";
+import { Post } from "../Post";
 import { useDocument } from "react-firebase-hooks/firestore";
 import firebase from "firebase/app";
 import { CircularProgress, Link, Divider } from "@material-ui/core";

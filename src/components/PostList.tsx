@@ -5,12 +5,12 @@ import { CircularProgress } from "@material-ui/core";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
 import { makeStyles } from "@material-ui/styles";
-import { Post } from "./Post";
+import { Post } from "../Post";
 import { Link } from "react-router-dom";
 import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
     margin: "2em 0.5em",
     display: "flex",
@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
     backgroundPosition: "center center",
     backgroundSize: "cover"
   }
-}));
+});
 
 const PostList = (props: { width: Breakpoint }) => {
   const classes = useStyles();
