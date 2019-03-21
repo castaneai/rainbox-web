@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   }
 });
 
-const RainBarAccount = (props: Props) => {
+const Account = (props: Props) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const fuser = props.fuser;
@@ -61,4 +61,4 @@ const RainBarAccount = (props: Props) => {
   );
 };
 
-export default RainBarAccount;
+export default Account;

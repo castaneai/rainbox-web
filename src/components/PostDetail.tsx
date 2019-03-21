@@ -78,7 +78,7 @@ const PostDetail = (props: Props) => {
               className={classes.tagChip}
               key={tag}
               component={(props: any) => (
-                <RouterLink to={`/tag/${tag}`} {...props} />
+                <RouterLink to={`/tags/${tag}`} {...props} />
               )}
             >
               #{tag}

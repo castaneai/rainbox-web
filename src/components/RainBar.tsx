@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button";
 import Gradient from "@material-ui/icons/Gradient";
 import { makeStyles } from "@material-ui/styles";
 import { Link } from "react-router-dom";
-import RainBarAccount from "./RainBarAccount";
+import Account from "./Account";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -49,11 +49,7 @@ const RainBar = () => {
           </Button>
         </Link>
         {!initialising &&
-          (user ? (
-            <RainBarAccount fuser={user} logout={logout} />
-          ) : (
-            loginButton()
-          ))}
+          (user ? <Account fuser={user} logout={logout} /> : loginButton())}
       </Toolbar>
     </div>
   );
