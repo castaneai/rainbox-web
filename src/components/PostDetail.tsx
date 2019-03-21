@@ -2,9 +2,10 @@ import React from "react";
 import { Post } from "./Post";
 import { useDocument } from "react-firebase-hooks/firestore";
 import firebase from "firebase/app";
-import { CircularProgress, Chip, Link } from "@material-ui/core";
+import { CircularProgress, Link, Divider } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { Link as RouterLink } from "react-router-dom";
+import PostAuthor from "./PostAuthor";
 
 interface Props {
   postId: string;
@@ -28,7 +29,7 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     height: "auto"
   },
-  metadata: {
+  section: {
     margin: "2em 0"
   },
   tagChip: {
@@ -66,8 +67,8 @@ const PostDetail = (props: Props) => {
         ))}
       </div>
 
-      <div className={classes.metadata}>
-        <div>
+      <div>
+        <section className={classes.section}>
           {post.tags.map(tag => (
             <Link
               className={classes.tagChip}
@@ -79,7 +80,11 @@ const PostDetail = (props: Props) => {
               #{tag}
             </Link>
           ))}
-        </div>
+        </section>
+        <Divider />
+        <section className={classes.section}>
+          <PostAuthor userId={post.authorUserId} />
+        </section>
       </div>
     </div>
   );
