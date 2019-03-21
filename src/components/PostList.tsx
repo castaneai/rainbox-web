@@ -7,6 +7,8 @@ import GridListTile from "@material-ui/core/GridListTile";
 import { makeStyles } from "@material-ui/styles";
 import { Post } from "./Post";
 import { Link } from "react-router-dom";
+import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
+import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,10 +19,16 @@ const useStyles = makeStyles(theme => ({
   },
   gridList: {
     width: 900
+  },
+  gridTile: {
+    height: "200px",
+    backgroundRepeat: "no-repeat",
+    backgroundPosition: "center center",
+    backgroundSize: "cover"
   }
 }));
 
-const PostList = () => {
+const PostList = (props: { width: Breakpoint }) => {
   const classes = useStyles();
   const { error, loading, value } = useCollection(
     firebase.firestore().collection("posts")
@@ -44,19 +52,29 @@ const PostList = () => {
     return (
       <GridListTile key={post.id} cols={1}>
         <Link to={`/post/${post.id}`}>
-          <img src={post.thumbnailUrl} />
+          <div
+            className={classes.gridTile}
+            style={{ backgroundImage: `url(${post.thumbnailUrl})` }}
+          />
         </Link>
       </GridListTile>
     );
   };
 
+  const gridCols = () => {
+    if (isWidthUp("md", props.width)) {
+      return 6;
+    }
+    return 3;
+  };
+
   return (
     <div className={classes.root}>
-      <GridList className={classes.gridList} cellHeight={150} cols={8}>
+      <GridList className={classes.gridList} cellHeight={250} cols={gridCols()}>
         {value.docs.map(tile)}
       </GridList>
     </div>
   );
 };
 
-export default PostList;
+export default withWidth()(PostList);
