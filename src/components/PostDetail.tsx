@@ -46,8 +46,8 @@ const PostDetail = (props: Props) => {
 
   return (
     <div className={classes.root}>
-      {post.imageUrls.map(imageUrl => (
-        <div className={classes.imageContainer}>
+      {post.imageUrls.map((imageUrl, i) => (
+        <div key={i} className={classes.imageContainer}>
           <img className={classes.image} src={imageUrl} />
         </div>
       ))}
