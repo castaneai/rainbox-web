@@ -1,0 +1,28 @@
+service cloud.firestore {
+
+  function incomingData() {
+    return request.resource.data;
+  }
+
+  function isAuthUser() {
+    return request.auth != null;
+  }
+
+  function isAuthor(uid) {
+    return uid == request.auth.uid;
+  }
+
+  match /databases/{database}/documents {
+
+    match /posts/{postid} {
+      allow read: if true;
+      allow write: if isAuthUser() && isAuthor(incomingData().authorUserId)
+    }
+
+    match /users/{uid} {
+      allow get: if isAuthUser();
+      allow write: if isAuthor(uid);
+    }
+
+  }
+}
