@@ -51,7 +51,7 @@ const PostList = (props: { width: Breakpoint }) => {
     const post = { id: doc.id, ...doc.data() } as Post;
     return (
       <GridListTile key={post.id} cols={1}>
-        <Link to={`/post/${post.id}`}>
+        <Link to={`/posts/${post.id}`}>
           <div
             className={classes.gridTile}
             style={{ backgroundImage: `url(${post.thumbnailUrl})` }}

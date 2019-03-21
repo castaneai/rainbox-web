@@ -12,7 +12,7 @@ const App = () => (
       <RainBar />
       <Route path="/" exact component={PostList} />
       <Route
-        path="/post/:id"
+        path="/posts/:id"
         render={props => <PostDetail postId={props.match.params.id} />}
       />
     </Router>

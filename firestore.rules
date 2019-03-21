@@ -20,8 +20,9 @@ service cloud.firestore {
     }
 
     match /users/{uid} {
-      allow get: if isAuthUser();
-      allow write: if isAuthor(uid);
+      allow get: if true;
+      allow create: if true;
+      allow update: if isAuthor(uid);
     }
 
   }
