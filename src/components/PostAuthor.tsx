@@ -32,7 +32,9 @@ const PostAuthor = (props: Props) => {
   if (!value) {
     return <p>empty user value</p>;
   }
-  const user = { id: props.userId, ...value.data() } as User;
+  const user = value.exists
+    ? ({ id: props.userId, ...value.data() } as User)
+    : ({ id: "", displayName: "???", avatarImageUrl: "" } as User);
 
   return (
     <div className={classes.root}>

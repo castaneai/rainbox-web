@@ -29,8 +29,11 @@ const useStyles = makeStyles(theme => ({
     width: "100%",
     height: "auto"
   },
+  metadata: {
+    marginTop: "3em"
+  },
   section: {
-    margin: "2em 0"
+    margin: "1em 0"
   },
   tagChip: {
     marginRight: "1em"
@@ -67,8 +70,9 @@ const PostDetail = (props: Props) => {
         ))}
       </div>
 
-      <div>
+      <div className={classes.metadata}>
         <section className={classes.section}>
+          <div>{post.description}</div>
           {post.tags.map(tag => (
             <Link
               className={classes.tagChip}
