@@ -2,8 +2,9 @@ import React from "react";
 import { Post } from "./Post";
 import { useDocument } from "react-firebase-hooks/firestore";
 import firebase from "firebase/app";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, Chip, Link } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import { Link as RouterLink } from "react-router-dom";
 
 interface Props {
   postId: string;
@@ -11,8 +12,13 @@ interface Props {
 
 const useStyles = makeStyles(theme => ({
   root: {
-    margin: "3em 0.5em",
-    display: "flex"
+    margin: "3em auto",
+    maxWidth: "900px"
+  },
+  imagesContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center"
   },
   imageContainer: {
     maxWidth: "900px"
@@ -21,6 +27,12 @@ const useStyles = makeStyles(theme => ({
     display: "block",
     width: "100%",
     height: "auto"
+  },
+  metadata: {
+    margin: "2em 0"
+  },
+  tagChip: {
+    marginRight: "1em"
   }
 }));
 
@@ -46,11 +58,29 @@ const PostDetail = (props: Props) => {
 
   return (
     <div className={classes.root}>
-      {post.imageUrls.map((imageUrl, i) => (
-        <div key={i} className={classes.imageContainer}>
-          <img className={classes.image} src={imageUrl} />
+      <div className={classes.imagesContainer}>
+        {post.imageUrls.map((imageUrl, i) => (
+          <div key={i} className={classes.imageContainer}>
+            <img className={classes.image} src={imageUrl} />
+          </div>
+        ))}
+      </div>
+
+      <div className={classes.metadata}>
+        <div>
+          {post.tags.map(tag => (
+            <Link
+              className={classes.tagChip}
+              key={tag}
+              component={(props: any) => (
+                <RouterLink to={`/tag/${tag}`} {...props} />
+              )}
+            >
+              #{tag}
+            </Link>
+          ))}
         </div>
-      ))}
+      </div>
     </div>
   );
 };
