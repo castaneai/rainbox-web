@@ -13,6 +13,14 @@ const useStyles = makeStyles(theme => ({
   root: {
     margin: "3em 0.5em",
     display: "flex"
+  },
+  imageContainer: {
+    maxWidth: "900px"
+  },
+  image: {
+    display: "block",
+    width: "100%",
+    height: "auto"
   }
 }));
 
@@ -26,7 +34,7 @@ const PostDetail = (props: Props) => {
   }
   if (loading) {
     return (
-      <div>
+      <div className={classes.root}>
         <CircularProgress />
       </div>
     );
@@ -38,7 +46,11 @@ const PostDetail = (props: Props) => {
 
   return (
     <div className={classes.root}>
-      <img src={post.thumbnailUrl} />
+      {post.imageUrls.map(imageUrl => (
+        <div className={classes.imageContainer}>
+          <img className={classes.image} src={imageUrl} />
+        </div>
+      ))}
     </div>
   );
 };
