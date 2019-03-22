@@ -10,12 +10,14 @@
     "@types/node": "11.11.4",
     "@types/react": "16.8.8",
     "@types/react-dom": "16.8.2",
+    "downshift": "^3.2.7",
     "firebase": "^5.9.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-firebase-hooks": "^1.1.0",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
+    "react-scrollable-anchor": "^0.6.1",
     "typescript": "3.3.4000"
   },
   "scripts": {
@@ -34,6 +36,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@types/react-router-dom": "^4.3.1"
+    "@types/react-router-dom": "^4.3.1",
+    "@types/react-scrollable-anchor": "^0.6.0"
   }
 }

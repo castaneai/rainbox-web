@@ -7,6 +7,7 @@ import Visibility from "@material-ui/icons/Visibility";
 import { makeStyles } from "@material-ui/styles";
 import { Link as RouterLink } from "react-router-dom";
 import PostAuthor from "./PostAuthor";
+import ScrollableAnchor from "react-scrollable-anchor";
 
 interface Props {
   postId: string;
@@ -63,10 +64,28 @@ const PostDetail = (props: Props) => {
 
   return (
     <div className={classes.root}>
+      <div className={classes.metadata}>
+        <div style={{ margin: "1em 0" }}>
+          {post.tags.map(tag => (
+            <Link
+              className={classes.tagChip}
+              key={tag}
+              component={(props: any) => (
+                <RouterLink to={`/tags/${tag}`} {...props} />
+              )}
+            >
+              #{tag}
+            </Link>
+          ))}
+        </div>
+      </div>
+
       <div className={classes.imagesContainer}>
         {post.imageUrls.map((imageUrl, i) => (
           <div key={i} className={classes.imageContainer}>
-            <img className={classes.image} src={imageUrl} />
+            <ScrollableAnchor id={`page${i + 1}`}>
+              <img className={classes.image} src={imageUrl} />
+            </ScrollableAnchor>
           </div>
         ))}
       </div>
@@ -74,19 +93,6 @@ const PostDetail = (props: Props) => {
       <div className={classes.metadata}>
         <section className={classes.section}>
           <div>{post.description}</div>
-          <div>
-            {post.tags.map(tag => (
-              <Link
-                className={classes.tagChip}
-                key={tag}
-                component={(props: any) => (
-                  <RouterLink to={`/tags/${tag}`} {...props} />
-                )}
-              >
-                #{tag}
-              </Link>
-            ))}
-          </div>
           <div style={{ margin: "1em 0" }}>
             <Typography variant="caption" gutterBottom>
               <Visibility fontSize="inherit" /> {post.viewCount}
