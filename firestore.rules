@@ -16,7 +16,7 @@ service cloud.firestore {
 
     match /posts/{postid} {
       allow read: if true;
-      allow write: if isAuthUser() && isAuthor(incomingData().authorUserId)
+      allow write: if isAuthUser() && isAuthor(incomingData().authorUserId);
     }
 
     match /users/{uid} {

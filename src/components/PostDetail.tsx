@@ -2,7 +2,8 @@ import React from "react";
 import { Post } from "../Post";
 import { useDocument } from "react-firebase-hooks/firestore";
 import firebase from "firebase/app";
-import { CircularProgress, Link, Divider } from "@material-ui/core";
+import { CircularProgress, Link, Divider, Typography } from "@material-ui/core";
+import Visibility from "@material-ui/icons/Visibility";
 import { makeStyles } from "@material-ui/styles";
 import { Link as RouterLink } from "react-router-dom";
 import PostAuthor from "./PostAuthor";
@@ -30,6 +31,7 @@ const useStyles = makeStyles(theme => ({
     height: "auto"
   },
   metadata: {
+    padding: "2em",
     marginTop: "3em"
   },
   section: {
@@ -42,9 +44,8 @@ const useStyles = makeStyles(theme => ({
 
 const PostDetail = (props: Props) => {
   const classes = useStyles();
-  const { error, loading, value } = useDocument(
-    firebase.firestore().doc(`posts/${props.postId}`)
-  );
+  const postRef = firebase.firestore().doc(`posts/${props.postId}`);
+  const { error, loading, value } = useDocument(postRef);
   if (error) {
     return <p>Error: {error}</p>;
   }
@@ -73,17 +74,24 @@ const PostDetail = (props: Props) => {
       <div className={classes.metadata}>
         <section className={classes.section}>
           <div>{post.description}</div>
-          {post.tags.map(tag => (
-            <Link
-              className={classes.tagChip}
-              key={tag}
-              component={(props: any) => (
-                <RouterLink to={`/tags/${tag}`} {...props} />
-              )}
-            >
-              #{tag}
-            </Link>
-          ))}
+          <div>
+            {post.tags.map(tag => (
+              <Link
+                className={classes.tagChip}
+                key={tag}
+                component={(props: any) => (
+                  <RouterLink to={`/tags/${tag}`} {...props} />
+                )}
+              >
+                #{tag}
+              </Link>
+            ))}
+          </div>
+          <div style={{ margin: "1em 0" }}>
+            <Typography variant="caption" gutterBottom>
+              <Visibility fontSize="inherit" /> {post.viewCount}
+            </Typography>
+          </div>
         </section>
         <Divider />
         <section className={classes.section}>

@@ -5,4 +5,5 @@ export interface Post {
   authorUserId: string;
   imageUrls: string[];
   tags: string[];
+  viewCount: number;
 }
