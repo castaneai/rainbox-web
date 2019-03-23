@@ -2,8 +2,16 @@ import React from "react";
 import { Post } from "../Post";
 import { useDocument } from "react-firebase-hooks/firestore";
 import firebase from "firebase/app";
-import { CircularProgress, Link, Divider, Typography } from "@material-ui/core";
+import {
+  CircularProgress,
+  Link,
+  Divider,
+  Typography,
+  IconButton,
+  Button
+} from "@material-ui/core";
 import Visibility from "@material-ui/icons/Visibility";
+import Add from "@material-ui/icons/Add";
 import { makeStyles } from "@material-ui/styles";
 import { Link as RouterLink } from "react-router-dom";
 import PostAuthor from "./PostAuthor";
@@ -38,7 +46,8 @@ const useStyles = makeStyles(theme => ({
   section: {
     margin: "1em 0"
   },
-  tagChip: {
+  tag: {
+    verticalAlign: "middle",
     marginRight: "1em"
   }
 }));
@@ -68,7 +77,7 @@ const PostDetail = (props: Props) => {
         <div style={{ margin: "1em 0" }}>
           {post.tags.map(tag => (
             <Link
-              className={classes.tagChip}
+              className={classes.tag}
               key={tag}
               component={(props: any) => (
                 <RouterLink to={`/tags/${tag}`} {...props} />
@@ -77,6 +86,9 @@ const PostDetail = (props: Props) => {
               #{tag}
             </Link>
           ))}
+          <IconButton>
+            <Add fontSize="small" />
+          </IconButton>
         </div>
       </div>
 
