@@ -1,9 +1,9 @@
 import React from "react";
 import firebase from "firebase/app";
-import { useDocument } from "react-firebase-hooks/firestore";
 import { User } from "../User";
 import { Button, Avatar, Menu, MenuItem } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import { useModel } from "../hooks/Store";
 
 interface Props {
   fuser: firebase.User;
@@ -23,11 +23,16 @@ const Account = (props: Props) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const fuser = props.fuser;
   const userRef = firebase.firestore().doc(`users/${fuser.uid}`);
-  const { error, loading, value } = useDocument(userRef);
-  if (error || loading || !value) {
+  const [user, loading] = useModel<User>(userRef);
+  if (loading) {
     return null;
   }
-  const myUser = { id: fuser.uid, ...value.data() } as User;
+  if (!user) {
+    return null;
+  }
+
+  // TODO: sign up
+  /*
   if (value && !value.exists) {
     // sign up as new user
     userRef.set({
@@ -35,6 +40,7 @@ const Account = (props: Props) => {
       avatarImageUrl: fuser.photoURL
     } as User);
   }
+  */
 
   const handleMenu = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -48,10 +54,10 @@ const Account = (props: Props) => {
       <Button onClick={handleMenu} color="inherit">
         <Avatar
           className={classes.avatar}
-          alt={myUser.displayName}
-          src={myUser.avatarImageUrl}
+          alt={user.displayName}
+          src={user.avatarImageUrl}
         />
-        {myUser.displayName}
+        {user.displayName}
       </Button>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
         <MenuItem onClick={handleClose}>My Profile</MenuItem>

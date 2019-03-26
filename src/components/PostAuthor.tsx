@@ -1,9 +1,9 @@
 import React from "react";
-import { useDocument } from "react-firebase-hooks/firestore";
 import firebase from "firebase/app";
 import { CircularProgress, Avatar, Button } from "@material-ui/core";
 import { User } from "../User";
 import { makeStyles } from "@material-ui/styles";
+import { useModel } from "../hooks/Store";
 
 interface Props {
   userId: string;
@@ -20,21 +20,14 @@ const useStyles = makeStyles({
 
 const PostAuthor = (props: Props) => {
   const classes = useStyles();
-  const { error, loading, value } = useDocument(
-    firebase.firestore().doc(`users/${props.userId}`)
-  );
-  if (error) {
-    return <p>error: {error}</p>;
-  }
+  const userRef = firebase.firestore().doc(`users/${props.userId}`);
+  const [user, loading] = useModel<User>(userRef);
   if (loading) {
     return <CircularProgress />;
   }
-  if (!value) {
-    return <p>empty user value</p>;
+  if (!user) {
+    return <p>unknown user</p>;
   }
-  const user = value.exists
-    ? ({ id: props.userId, ...value.data() } as User)
-    : ({ id: "", displayName: "???", avatarImageUrl: "" } as User);
 
   return (
     <div className={classes.root}>

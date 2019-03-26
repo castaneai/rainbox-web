@@ -2,7 +2,6 @@ import React from "react";
 import Downshift from "downshift";
 import { TextField, Chip, Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { bool } from "prop-types";
 
 interface Props {
   tags: string[];

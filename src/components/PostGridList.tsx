@@ -1,6 +1,5 @@
 import React from "react";
 import firebase from "firebase/app";
-import { useCollection } from "react-firebase-hooks/firestore";
 import { CircularProgress } from "@material-ui/core";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
@@ -9,6 +8,7 @@ import { Post } from "../Post";
 import { Link } from "react-router-dom";
 import withWidth, { isWidthUp } from "@material-ui/core/withWidth";
 import { Breakpoint } from "@material-ui/core/styles/createBreakpoints";
+import { useModels } from "../hooks/Store";
 
 const useStyles = makeStyles({
   root: {
@@ -28,14 +28,10 @@ const useStyles = makeStyles({
   }
 });
 
-const PostList = (props: { width: Breakpoint }) => {
+const PostGridList = (props: { width: Breakpoint }) => {
   const classes = useStyles();
-  const { error, loading, value } = useCollection(
-    firebase.firestore().collection("posts")
-  );
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
+  const postsRef = firebase.firestore().collection("posts");
+  const [posts, loading] = useModels<Post>(postsRef);
   if (loading) {
     return (
       <div className={classes.root}>
@@ -43,12 +39,8 @@ const PostList = (props: { width: Breakpoint }) => {
       </div>
     );
   }
-  if (!value) {
-    return <p>nothing</p>;
-  }
 
-  const tile = (doc: firebase.firestore.QueryDocumentSnapshot) => {
-    const post = { id: doc.id, ...doc.data() } as Post;
+  const tile = (post: Post) => {
     return (
       <GridListTile key={post.id} cols={1}>
         <Link to={`/posts/${post.id}`}>
@@ -71,10 +63,10 @@ const PostList = (props: { width: Breakpoint }) => {
   return (
     <div className={classes.root}>
       <GridList className={classes.gridList} cellHeight={250} cols={gridCols()}>
-        {value.docs.map(tile)}
+        {posts.map(tile)}
       </GridList>
     </div>
   );
 };
 
-export default withWidth()(PostList);
+export default withWidth()(PostGridList);

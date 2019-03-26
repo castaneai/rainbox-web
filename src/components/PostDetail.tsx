@@ -1,14 +1,12 @@
 import React from "react";
 import { Post } from "../Post";
-import { useDocument } from "react-firebase-hooks/firestore";
 import firebase from "firebase/app";
 import {
   CircularProgress,
   Link,
   Divider,
   Typography,
-  IconButton,
-  Button
+  IconButton
 } from "@material-ui/core";
 import Visibility from "@material-ui/icons/Visibility";
 import Add from "@material-ui/icons/Add";
@@ -16,12 +14,13 @@ import { makeStyles } from "@material-ui/styles";
 import { Link as RouterLink } from "react-router-dom";
 import PostAuthor from "./PostAuthor";
 import ScrollableAnchor from "react-scrollable-anchor";
+import { useModel } from "../hooks/Store";
 
 interface Props {
   postId: string;
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
     margin: "3em auto",
     maxWidth: "900px"
@@ -50,15 +49,12 @@ const useStyles = makeStyles(theme => ({
     verticalAlign: "middle",
     marginRight: "1em"
   }
-}));
+});
 
 const PostDetail = (props: Props) => {
   const classes = useStyles();
   const postRef = firebase.firestore().doc(`posts/${props.postId}`);
-  const { error, loading, value } = useDocument(postRef);
-  if (error) {
-    return <p>Error: {error}</p>;
-  }
+  const [post, loading] = useModel<Post>(postRef);
   if (loading) {
     return (
       <div className={classes.root}>
@@ -66,10 +62,9 @@ const PostDetail = (props: Props) => {
       </div>
     );
   }
-  if (!value || !value.exists) {
-    return <p>nothing</p>;
+  if (!post) {
+    return <p>post not found</p>;
   }
-  const post = { id: props.postId, ...value.data() } as Post;
 
   return (
     <div className={classes.root}>
