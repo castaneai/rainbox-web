@@ -35,10 +35,6 @@ const RainBar = () => {
     await firebase.auth().signOut();
   };
 
-  const loginButton = () => {
-    return <Button onClick={login}>Login</Button>;
-  };
-
   return (
     <div className={classes.root}>
       <Toolbar>
@@ -49,7 +45,11 @@ const RainBar = () => {
           </Button>
         </Link>
         {!initialising &&
-          (user ? <Account fuser={user} logout={logout} /> : loginButton())}
+          (user ? (
+            <Account fuser={user} logout={logout} />
+          ) : (
+            <Button onClick={login}>Login</Button>
+          ))}
       </Toolbar>
     </div>
   );
